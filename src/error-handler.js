@@ -10,6 +10,8 @@ export const errorHandler = (method) => {
     } catch (error) {
       let exception;
 
+      console.log('errror', error);
+
       if (error instanceof HttpException) {
         exception = error;
       } else {

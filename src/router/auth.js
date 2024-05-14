@@ -7,7 +7,7 @@ import refreshMiddlewares from '../middlewares/refresh.js';
 
 const routerAuth = new Router();
 
-routerAuth.post('/registration', [authMiddlewares, adminMiddlewares], errorHandler(registration));
+routerAuth.post('/registration', errorHandler(registration));
 routerAuth.post('/login', errorHandler(login));
 routerAuth.get('/me', [authMiddlewares], errorHandler(me));
 routerAuth.get('/verify', [authMiddlewares], errorHandler(verify));

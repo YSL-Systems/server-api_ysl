@@ -16,7 +16,7 @@ app.use(
     origin: [process.env.FRONT_URL, 'http://localhost:5173'],
   })
 );
-
+app.use('/avatars', express.static('public/avatars/'));
 app.use('/api', rootRouter);
 
 export const prismaClient = new PrismaClient({

@@ -16,6 +16,8 @@ export const ErrorCode = {
   INTERNAL_EXCEPTION: 3001,
   UNAUTHORIZED: 4001,
   UNVALID_TOKEN: 4002,
+  UNVALID_FILE: 4003,
+  FILE_NOT_FOUND: 4004,
 };
 
 export const ErrorMessage = {
@@ -26,4 +28,6 @@ export const ErrorMessage = {
   INTERNAL_EXCEPTION: 'Что-то пошло не так...',
   UNAUTHORIZED: 'Нет авторизации',
   UNVALID_TOKEN: 'Токен невалиден',
+  UNVALID_FILE: 'Неверный формат загружаемого файла',
+  FILE_NOT_FOUND: 'Ошибка загрузки фото. Повторите позже',
 };

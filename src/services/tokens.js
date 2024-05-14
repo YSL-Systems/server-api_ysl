@@ -3,7 +3,7 @@ import { JWT_ACCESS_SECRET, JWT_REFRECH_SECRET } from '../secrets.js';
 import { prismaClient } from '../index.js';
 
 export const generateTokens = async (payload) => {
-  const access = jwt.sign(payload, JWT_ACCESS_SECRET, { expiresIn: '1m' });
+  const access = jwt.sign(payload, JWT_ACCESS_SECRET, { expiresIn: '15m' });
   const refresh = jwt.sign(payload, JWT_REFRECH_SECRET, { expiresIn: '15d' });
 
   return {

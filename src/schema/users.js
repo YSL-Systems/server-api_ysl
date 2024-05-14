@@ -6,4 +6,6 @@ export const RegistrationScheme = z.object({
   password: z.string().min(5).max(25),
   role: z.string(),
   topic: z.string(),
+  city: z.string(),
+  photo: z.string(),
 });

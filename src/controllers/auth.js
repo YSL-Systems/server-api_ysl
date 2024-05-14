@@ -10,7 +10,7 @@ import { InternalException } from '../exceptions/internal-exception.js';
 export const registration = async (req, res, next) => {
   RegistrationScheme.parse(req.body);
 
-  const { name, phone, password, role, topic } = req.body;
+  const { name, phone, password, role, topic, city, photo } = req.body;
 
   let user = await prismaClient.user.findFirst({ where: { phone } });
 
@@ -25,6 +25,8 @@ export const registration = async (req, res, next) => {
       password: bcrypt.hashSync(password, 10),
       role,
       topic,
+      city,
+      photo,
     },
   });
 
