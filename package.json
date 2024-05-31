@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "nodemon loader.cjs",
     "generate": "npx prisma generate",
-    "migration": "npx prisma migrate deploy"
+    "migration": "npx prisma migrate deploy",
+    "migration_resolve": "npx prisma migrate resolve --applied '20240527074837_add_unique_scheme_tokens'"
   },
   "author": "Vadim Lasevich",
   "license": "ISC",

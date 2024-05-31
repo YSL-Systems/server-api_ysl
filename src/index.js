@@ -18,10 +18,8 @@ app.use(
 );
 app.use('/avatars', express.static('public/avatars/'));
 app.use('/api', rootRouter);
-
-export const prismaClient = new PrismaClient({
-  log: ['query'],
-});
+//{log: ['query']}
+export const prismaClient = new PrismaClient();
 
 app.use(errorMiddleware);
 

@@ -3,7 +3,7 @@ import { JWT_ACCESS_SECRET, JWT_REFRECH_SECRET } from '../secrets.js';
 import { prismaClient } from '../index.js';
 
 export const generateTokens = async (payload) => {
-  const access = jwt.sign(payload, JWT_ACCESS_SECRET, { expiresIn: '15m' });
+  const access = jwt.sign(payload, JWT_ACCESS_SECRET, { expiresIn: '1m' });
   const refresh = jwt.sign(payload, JWT_REFRECH_SECRET, { expiresIn: '15d' });
 
   return {
@@ -34,11 +34,11 @@ export const verifyRefreshToken = async (token) => {
 
 export const saveToken = async (id, token) => {
   try {
-    const user = await prismaClient.user.findFirst({ where: { id } });
-    const userToken = await prismaClient.token.findFirst({ where: { userId: id } });
+    const user = await prismaClient.user.findUnique({ where: { id } });
+    const userToken = await prismaClient.token.findUnique({ where: { userId: id } });
 
     if (user && userToken) {
-      const result = await prismaClient.token.updateMany({
+      const result = await prismaClient.token.update({
         where: { userId: id },
         data: { token },
       });
@@ -59,7 +59,7 @@ export const saveToken = async (id, token) => {
 };
 
 export const removeToken = async (token) => {
-  const payload = await prismaClient.token.deleteMany({ where: { token } });
+  const payload = await prismaClient.token.delete({ where: { token } });
 
   if (payload) {
     return true;
@@ -67,7 +67,7 @@ export const removeToken = async (token) => {
 };
 
 export const findToken = async (token) => {
-  const payload = await prismaClient.token.findFirst({ where: { token } });
+  const payload = await prismaClient.token.findUnique({ where: { token } });
 
   return payload;
 };

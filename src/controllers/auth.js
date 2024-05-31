@@ -12,7 +12,7 @@ export const registration = async (req, res, next) => {
 
   const { name, phone, password, role, topic, city, photo } = req.body;
 
-  let user = await prismaClient.user.findFirst({ where: { phone } });
+  let user = await prismaClient.user.findUnique({ where: { phone } });
 
   if (user) {
     throw new BadRequestsExceptions(ErrorMessage.USER_ALREADY_EXISTS, ErrorCode.USER_ALREADY_EXISTS);
@@ -36,7 +36,7 @@ export const registration = async (req, res, next) => {
 export const login = async (req, res, next) => {
   const { phone, password } = req.body;
 
-  let user = await prismaClient.user.findFirst({ where: { phone } });
+  let user = await prismaClient.user.findUnique({ where: { phone } });
 
   if (!user) {
     throw new NotFoundExceptions(ErrorMessage.USER_NOT_FOUND, ErrorCode.USER_NOT_FOUND);

@@ -18,7 +18,7 @@ const authMiddlewares = async (req, res, next) => {
       next(new UnvalidTokenExceptions(ErrorMessage.UNVALID_TOKEN, ErrorCode.UNVALID_TOKEN));
     }
 
-    const user = await prismaClient.user.findFirst({ where: { id: verify.userId } });
+    const user = await prismaClient.user.findUnique({ where: { id: verify.userId } });
 
     req.user = user;
     next();

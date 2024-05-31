@@ -18,8 +18,8 @@ const refreshMiddlewares = async (req, res, next) => {
     if (!verify || !tokenDB) {
       next(new UnvalidTokenExceptions(ErrorMessage.UNVALID_TOKEN, ErrorCode.UNVALID_TOKEN));
     }
-    const tokens = await generateTokens({ userId: verify.id });
-    await saveToken(verify.id, tokens.refresh);
+    const tokens = await generateTokens({ userId: verify.userId });
+    await saveToken(verify.userId, tokens.refresh);
 
     req.tokens = tokens;
     next();

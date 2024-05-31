@@ -24,8 +24,8 @@ model User  {
 
 model Token {
   id Int @id @default(autoincrement())
-  userId Int
-  token String
+  userId Int @unique
+  token String @unique
 
   @@map("tokens")
 }
