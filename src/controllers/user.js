@@ -1,5 +1,4 @@
 import bcrypt from 'bcryptjs';
-import path from 'path';
 import fs from 'fs';
 
 import { prismaClient } from '../index.js';
@@ -7,6 +6,7 @@ import { NotFoundExceptions } from '../exceptions/not-found.js';
 import { ErrorCode, ErrorMessage } from '../exceptions/root.js';
 import { BadRequestsExceptions } from '../exceptions/bad-requests.js';
 import { UnvalidFileExceptions } from '../exceptions/unvalid-file.js';
+import { excludeFieldPrisma } from '../utils/excludeFieldPrisma.js';
 
 export const updateUser = async (req, res) => {
   const user = req.body;
@@ -19,13 +19,6 @@ export const updateUser = async (req, res) => {
     }
   }
 
-  // if (user?.password) {
-  //   let candidat = await prismaClient.user.findFirst({ where: { phone: user.phone } });
-  //   if (!bcrypt.compareSync(password, user.password)) {
-  //     throw new BadRequestsExceptions(ErrorMessage.INCORRECT_PASSWORD, ErrorCode.INCORRECT_PASSWORD);
-  //   }
-  // }
-
   try {
     const updateUser = await prismaClient.user.update({
       where: { id: +req.params?.id },
@@ -36,7 +29,7 @@ export const updateUser = async (req, res) => {
         : user,
     });
 
-    res.json(updateUser);
+    res.json(excludeFieldPrisma(updateUser, ['created_at', 'updated_at']));
   } catch (error) {
     throw new NotFoundExceptions(ErrorMessage.INTERNAL_EXCEPTION, ErrorCode.INTERNAL_EXCEPTION);
   }
@@ -54,11 +47,11 @@ export const updateUserImage = async (req, res) => {
     const updateUser = await prismaClient.user.update({
       where: { id: user.id },
       data: {
-        photo: file.filename,
+        photo: `avatars/${file.filename}`,
       },
     });
 
-    res.json(updateUser);
+    res.json(excludeFieldPrisma(updateUser, ['created_at', 'updated_at']));
   } catch (error) {
     console.log('ERROR updateUserImage', error);
     throw new NotFoundExceptions(ErrorMessage.USER_NOT_FOUND, ErrorCode.USER_NOT_FOUND);
@@ -84,7 +77,7 @@ export const deleteUserImage = async (req, res) => {
       },
     });
 
-    res.json(updateUser);
+    res.json(excludeFieldPrisma(updateUser, ['created_at', 'updated_at']));
   } catch (error) {
     console.log('ERROR updateUserImage', error);
     throw new NotFoundExceptions(ErrorMessage.USER_NOT_FOUND, ErrorCode.USER_NOT_FOUND);

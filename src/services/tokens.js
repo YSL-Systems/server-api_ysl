@@ -35,11 +35,11 @@ export const verifyRefreshToken = async (token) => {
 export const saveToken = async (id, token) => {
   try {
     const user = await prismaClient.user.findUnique({ where: { id } });
-    const userToken = await prismaClient.token.findUnique({ where: { userId: id } });
+    const userToken = await prismaClient.token.findUnique({ where: { user_id: id } });
 
     if (user && userToken) {
       const result = await prismaClient.token.update({
-        where: { userId: id },
+        where: { user_id: id },
         data: { token },
       });
 
@@ -47,7 +47,7 @@ export const saveToken = async (id, token) => {
     } else {
       const result = await prismaClient.token.create({
         data: {
-          userId: user.id,
+          user_id: user.id,
           token,
         },
       });

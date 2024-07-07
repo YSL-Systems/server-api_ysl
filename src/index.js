@@ -5,6 +5,7 @@ import rootRouter from './router/index.js';
 import { PORT } from './secrets.js';
 import { PrismaClient } from '@prisma/client';
 import { errorMiddleware } from './middlewares/errors.js';
+import { mqttClient } from './services/broker.js';
 
 const app = express();
 
@@ -16,7 +17,8 @@ app.use(
     origin: [process.env.FRONT_URL, 'http://localhost:5173'],
   })
 );
-app.use('/avatars', express.static('public/avatars/'));
+
+app.use('/images', express.static('public/'));
 app.use('/api', rootRouter);
 //{log: ['query']}
 export const prismaClient = new PrismaClient();

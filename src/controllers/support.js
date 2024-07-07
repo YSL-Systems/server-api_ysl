@@ -5,11 +5,13 @@ import { ErrorCode, ErrorMessage } from '../exceptions/root.js';
 
 export const supportUser = async (req, res) => {
   try {
-    const { value, type } = req.body;
+    const { value, type, name, phone } = req.body;
     const bot = new TelegramBot(BOT_TOKEN, { polling: true });
     const messageChat = `
       Обратная связь с мобильного приложения.
 
+      Пользователь - ${name}
+      Телефон - ${phone}
       Тип сообщения - ${type}
       Сообщение - ${value}
       `;

@@ -12,22 +12,52 @@ model User  {
   name String
   phone String @unique
   password String
+  categories Category[]
+  systems System[]  @relation("Systems")
   role Role @default(USER)
   topic String
   city String
   photo String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
 
   @@map("users")
 }
 
 model Token {
   id Int @id @default(autoincrement())
-  userId Int @unique
+  user_id Int @unique
   token String @unique
 
   @@map("tokens")
+}
+
+model Category {
+  id Int @id @default(autoincrement())
+  user User @relation(fields: [user_id], references: [id])
+  user_id Int
+  category String
+  name String
+  image String
+  gradient Boolean
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  @@map("categories")
+}
+model System {
+  id Int @id @default(autoincrement())
+  user User @relation("Systems",fields: [user_id], references: [id])
+  user_id Int
+  favorite Boolean
+  system String
+  category String
+  category_name String
+  name String
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  @@map("systems")
 }
 
 enum Role {

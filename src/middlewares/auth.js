@@ -8,21 +8,28 @@ const authMiddlewares = async (req, res, next) => {
   const token = req.headers.authorization;
 
   if (!token) {
-    next(new UnauthorizedExceptions(ErrorMessage.UNAUTHORIZED, ErrorCode.UNAUTHORIZED));
+    return next(new UnauthorizedExceptions(ErrorMessage.UNAUTHORIZED, ErrorCode.UNAUTHORIZED));
   }
 
   try {
     const verify = await verifyAccessToken(token);
 
     if (!verify) {
-      next(new UnvalidTokenExceptions(ErrorMessage.UNVALID_TOKEN, ErrorCode.UNVALID_TOKEN));
+      return next(new UnvalidTokenExceptions(ErrorMessage.UNVALID_TOKEN, ErrorCode.UNVALID_TOKEN));
     }
 
-    const user = await prismaClient.user.findUnique({ where: { id: verify.userId } });
+    const user = await prismaClient.user.findUnique({
+      where: { id: verify.user_id },
+      // include: {
+      //   categories: true,
+      //   systems: true,
+      // },
+    });
 
     req.user = user;
     next();
   } catch (error) {
+    console.log('ERROR AUTH', error);
     next(new UnauthorizedExceptions(ErrorMessage.UNAUTHORIZED, ErrorCode.UNAUTHORIZED));
   }
 };
