@@ -1,9 +1,11 @@
 import jwt from 'jsonwebtoken';
 import { JWT_ACCESS_SECRET, JWT_REFRECH_SECRET } from '../secrets.js';
 import { prismaClient } from '../index.js';
+import { BadRequestsExceptions } from '../exceptions/bad-requests.js';
+import { ErrorCode, ErrorMessage } from '../exceptions/root.js';
 
 export const generateTokens = async (payload) => {
-  const access = jwt.sign(payload, JWT_ACCESS_SECRET, { expiresIn: '1m' });
+  const access = jwt.sign(payload, JWT_ACCESS_SECRET, { expiresIn: '15m' });
   const refresh = jwt.sign(payload, JWT_REFRECH_SECRET, { expiresIn: '15d' });
 
   return {
@@ -59,15 +61,21 @@ export const saveToken = async (id, token) => {
 };
 
 export const removeToken = async (token) => {
-  const payload = await prismaClient.token.delete({ where: { token } });
+  try {
+    const payload = await prismaClient.token.delete({ where: { token } });
 
-  if (payload) {
-    return true;
+    return payload;
+  } catch (error) {
+    throw new BadRequestsExceptions(ErrorMessage.FIELDS_UNVALID, ErrorCode.FIELDS_UNVALID);
   }
 };
 
 export const findToken = async (token) => {
-  const payload = await prismaClient.token.findUnique({ where: { token } });
+  try {
+    const payload = await prismaClient.token.findUnique({ where: { token } });
 
-  return payload;
+    return payload;
+  } catch (error) {
+    throw new BadRequestsExceptions(ErrorMessage.FIELDS_UNVALID, ErrorCode.FIELDS_UNVALID);
+  }
 };

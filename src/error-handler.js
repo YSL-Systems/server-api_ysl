@@ -1,7 +1,7 @@
 import { ZodError } from 'zod';
 import { InternalException } from './exceptions/internal-exception.js';
 import { ErrorCode, ErrorMessage, HttpException } from './exceptions/root.js';
-import { UnprocessableEntity } from './exceptions/validation.js';
+import { BadRequestsExceptions } from './exceptions/bad-requests.js';
 
 export const errorHandler = (method) => {
   return async (req, res, next) => {
@@ -16,9 +16,19 @@ export const errorHandler = (method) => {
         exception = error;
       } else {
         if (error instanceof ZodError) {
-          exception = new UnprocessableEntity(ErrorMessage.UNPROCESSABLE_ENTITY, ErrorCode.UNPROCESSABLE_ENTITY);
+          const ErrorRequiredField = error.errors.find((err) => err.message === 'Required');
+
+          if (ErrorRequiredField) {
+            exception = new BadRequestsExceptions(
+              ErrorMessage.REQUIRED_FIELDS_NOT_FOUND,
+              ErrorCode.REQUIRED_FIELDS_NOT_FOUND
+              // error?.issues
+            );
+          } else {
+            exception = new BadRequestsExceptions(ErrorMessage.FIELDS_UNVALID, ErrorCode.FIELDS_UNVALID);
+          }
         } else {
-          exception = new InternalException(ErrorMessage.INTERNAL_EXCEPTION, error, ErrorCode.INTERNAL_EXCEPTION);
+          exception = new InternalException(ErrorMessage.INTERNAL_EXCEPTION, ErrorCode.INTERNAL_EXCEPTION, error);
         }
       }
 

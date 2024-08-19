@@ -1,13 +1,13 @@
 import TelegramBot from 'node-telegram-bot-api';
 import { BOT_TOKEN, CHAT_ID } from '../secrets.js';
-import { NotFoundExceptions } from '../exceptions/not-found.js';
-import { ErrorCode, ErrorMessage } from '../exceptions/root.js';
+import { SupportScheme } from '../schema/users.js';
 
 export const supportUser = async (req, res) => {
-  try {
-    const { value, type, name, phone } = req.body;
-    const bot = new TelegramBot(BOT_TOKEN, { polling: true });
-    const messageChat = `
+  SupportScheme.parse(req.body);
+  const { value, type, name, phone } = req.body;
+
+  const bot = new TelegramBot(BOT_TOKEN, { polling: true });
+  const messageChat = `
       Обратная связь с мобильного приложения.
 
       Пользователь - ${name}
@@ -16,10 +16,6 @@ export const supportUser = async (req, res) => {
       Сообщение - ${value}
       `;
 
-    await bot.sendMessage(CHAT_ID, messageChat);
-    return res.json({ success: true });
-  } catch (error) {
-    console.log(error);
-    throw new NotFoundExceptions(ErrorMessage.INTERNAL_EXCEPTION, ErrorCode.INTERNAL_EXCEPTION);
-  }
+  await bot.sendMessage(CHAT_ID, messageChat);
+  return res.json({ success: true });
 };

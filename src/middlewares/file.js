@@ -1,6 +1,6 @@
 import multer from 'multer';
 import { ErrorCode, ErrorMessage } from '../exceptions/root.js';
-import { UnvalidFileExceptions } from '../exceptions/unvalid-file.js';
+import { UnvalidException } from '../exceptions/unvalid.js';
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -17,7 +17,7 @@ const fileFilter = (req, file, cb) => {
   if (types.includes(file.mimetype)) {
     cb(null, true);
   } else {
-    cb(new UnvalidFileExceptions(ErrorMessage.UNVALID_FILE, ErrorCode.UNVALID_FILE), false);
+    cb(new UnvalidException(ErrorMessage.FILE_UNVALID, ErrorCode.FILE_UNVALID), false);
   }
 };
 

@@ -13,7 +13,7 @@ import {
   SYSTEM_SMART_CONTROLLER_NAME,
   CATEGORY_OTHER,
   CATEGORY_OTHER_NAME,
-} from '../secrets';
+} from '../secrets.js';
 
 export const systemsConfig = (system) => {
   switch (system) {

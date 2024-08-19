@@ -12,7 +12,7 @@ import {
   CATEGORY_LIGHTING,
   CATEGORY_LIGHTING_NAME,
   CATEGORY_LIGHTING_IMAGE,
-} from '../secrets';
+} from '../secrets.js';
 
 export const categoriesConfig = (category) => {
   switch (category) {
@@ -30,13 +30,6 @@ export const categoriesConfig = (category) => {
         image: CATEGORY_HEATING_IMAGE,
         gradient: true,
       };
-    case CATEGORY_MANUAL_ESP:
-      return {
-        category: CATEGORY_OTHER,
-        name: CATEGORY_OTHER_NAME,
-        image: CATEGORY_OTHER_IMAGE,
-        gradient: true,
-      };
     case CATEGORY_LIGHTING:
       return {
         category: CATEGORY_LIGHTING,
@@ -44,7 +37,14 @@ export const categoriesConfig = (category) => {
         image: CATEGORY_LIGHTING_IMAGE,
         gradient: false,
       };
+    case CATEGORY_OTHER:
+      return {
+        category: CATEGORY_OTHER,
+        name: CATEGORY_OTHER_NAME,
+        image: CATEGORY_OTHER_IMAGE,
+        gradient: true,
+      };
     default:
-      return null;
+      null;
   }
 };
