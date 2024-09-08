@@ -70,7 +70,7 @@ export const logout = async (req, res, next) => {
 
 export const me = async (req, res, next) => {
   const user = await excludeFieldPrisma(req.user, ['created_at', 'updated_at']);
-  res.json({ user });
+  res.json(user);
 };
 
 export const verify = async (req, res, next) => {
