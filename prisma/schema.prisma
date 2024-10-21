@@ -12,8 +12,7 @@ model User  {
   name String
   phone String @unique
   password String
-  categories Category[]
-  systems System[]  @relation("Systems")
+  categories Category[] @relation("Categories")
   role Role @default(USER)
   topic String
   city String
@@ -34,7 +33,7 @@ model Token {
 
 model Category {
   id Int @id @default(autoincrement())
-  user User @relation(fields: [user_id], references: [id])
+  user User @relation("Categories",fields: [user_id], references: [id])
   user_id Int
   category String
   name String
@@ -45,11 +44,25 @@ model Category {
 
   @@map("categories")
 }
+
+model CategoryType {
+  id Int @id @default(autoincrement())
+  category String @unique
+  name String
+  image String
+  gradient Boolean
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  @@map("category_type")
+}
 model System {
   id Int @id @default(autoincrement())
-  user User @relation("Systems",fields: [user_id], references: [id])
+  scenarios Scenario[] @relation("Scenario")
+  sensors Sensor[] @relation("Sensor")
+  outputs Output[] @relation("Output")
   user_id Int
-  favorite Boolean
+  favorite Boolean @default(false)
   system String
   category String
   category_name String
@@ -58,6 +71,63 @@ model System {
   updated_at DateTime @updatedAt
 
   @@map("systems")
+}
+
+model Scenario {
+  id Int @id @default(autoincrement())
+  system System @relation("Scenario", fields: [system_id], references: [id])
+  system_id Int
+  scenario Int
+  name String
+  activated Boolean @default(false)
+  running Boolean @default(false)
+  configuration Json
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  @@map("scenarios")
+}
+
+model Sensor {
+  id Int @id @default(autoincrement())
+  system System @relation("Sensor", fields: [system_id], references: [id])
+  system_id Int
+  controller_id Int
+  type Int
+  address String
+  name String
+  active Boolean @default(false)
+  status String
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  @@map("sensors")
+}
+
+model Output {
+  id Int @id @default(autoincrement())
+  system System @relation("Output", fields: [system_id], references: [id])
+  system_id Int
+  title String
+  value Int
+  active Boolean @default(true)
+  static Boolean @default(false)
+  mode Int @default(0)
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  @@map("outputs")
+}
+
+model SensorType {
+  id Int @id @default(autoincrement())
+  type Int @unique
+  name String
+  activated Boolean @default(true)
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  @@map("sensor_type")
 }
 
 enum Role {

@@ -2,7 +2,7 @@ import TelegramBot from 'node-telegram-bot-api';
 import { BOT_TOKEN, CHAT_ID } from '../secrets.js';
 import { SupportMobileScheme, SupportSiteScheme } from '../schema/users.js';
 
-const bot = new TelegramBot(BOT_TOKEN, { polling: true });
+// const bot = new TelegramBot(BOT_TOKEN, { polling: true });
 
 export const supportUser = async (req, res) => {
   SupportMobileScheme.parse(req.body);

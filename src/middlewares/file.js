@@ -4,6 +4,8 @@ import { UnvalidException } from '../exceptions/unvalid.js';
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
+    console.log('file', file);
+
     cb(null, 'public/avatars');
   },
   filename: (req, file, cb) => {

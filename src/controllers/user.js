@@ -60,7 +60,6 @@ export const deleteUserImage = async (req, res) => {
       console.error(err);
       return;
     }
-    console.log('File deleted successfully');
   });
 
   const updateUser = await prismaClient.user.update({

@@ -24,7 +24,6 @@ const authMiddlewares = async (req, res, next) => {
     req.user = user;
     next();
   } catch (error) {
-    console.log('ERROR AUTH', error);
     next(new InternalException(ErrorMessage.INTERNAL_EXCEPTION, ErrorCode.INTERNAL_EXCEPTION));
   }
 };
